@@ -1,6 +1,6 @@
 # Amazon Bedrock with Builder and Command Patterns
 
-[Amazon Bedrock](https://aws.amazon.com/bedrock) is a fully managed service that offers a choice of high-performing foundation models (FMs) from leading AI companies like AI21 Labs, Anthropic, Cohere, Stability AI, and Amazon with a single API. From the operations perspective, having a single unified API provides development and deployment velocity, as aspects like security, scalability, and monitoring are standardized.
+[Amazon Bedrock](https://aws.amazon.com/bedrock) is a fully managed service that offers a choice of high-performing foundation models (FMs) from leading AI companies like AI21 Labs, Anthropic, Cohere, Stability AI, and Amazon with a single API. From the Ops perspective, having a single unified API provides development and deployment velocity, as aspects like security, scalability, and monitoring are standardized.
 
 However, when it comes to write code to interact with the FMs, developers must handle manually the API peculiarities of each FM. This happens because the schema of each FM is unique, and to perform an API request, the correct body payload must be provided.
 
