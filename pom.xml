@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <groupId>com.amazon.aws.developers</groupId>
-    <artifactId>amazon-bedrock-with-builder-pattern</artifactId>
+    <artifactId>amazon-bedrock-with-builder-and-command-patterns</artifactId>
     <version>1.0</version>
 
 	<properties>
