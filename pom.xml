@@ -18,13 +18,13 @@
 
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
-			<artifactId>aws-sdk-java</artifactId>
+			<artifactId>bedrock</artifactId>
 			<version>2.20.162</version>
-		</dependency>	
+		</dependency>
 
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
-			<artifactId>bedrock</artifactId>
+			<artifactId>bedrockruntime</artifactId>
 			<version>2.20.162</version>
 		</dependency>
 
