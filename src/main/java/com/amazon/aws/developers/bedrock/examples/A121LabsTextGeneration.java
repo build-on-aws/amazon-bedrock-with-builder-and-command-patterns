@@ -45,7 +45,7 @@ public class A121LabsTextGeneration {
             InvokeModelResponse invokeModelResponse = bedrockClient.invokeModel(invokeModelRequest);
             JSONObject responseAsJson = new JSONObject(invokeModelResponse.body().asUtf8String());
 
-            System.out.print("🤖 Response: ");
+            System.out.println("🤖 Response: ");
             System.out.println(responseAsJson
                 .getJSONArray("completions")
                 .getJSONObject(0)

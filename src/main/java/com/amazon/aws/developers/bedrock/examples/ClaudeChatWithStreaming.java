@@ -4,6 +4,8 @@ import java.nio.charset.Charset;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 
+import org.json.JSONObject;
+
 import com.amazon.aws.developers.bedrock.util.BedrockRequestBody;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
@@ -11,21 +13,22 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.bedrockruntime.BedrockRuntimeAsyncClient;
 import software.amazon.awssdk.services.bedrockruntime.model.InvokeModelWithResponseStreamRequest;
 import software.amazon.awssdk.services.bedrockruntime.model.InvokeModelWithResponseStreamResponseHandler;
+import software.amazon.awssdk.services.bedrockruntime.model.PayloadPart;
 
 public class ClaudeChatWithStreaming {
 
     private static final String MODEL_ID = "anthropic.claude-v2";
 
     private static final String PROMPT = """
-        <paragraph>
-            "In 1758, the Swedish botanist and zoologist Carl Linnaeus published in his Systema Naturae,
-            the two-word naming of species (binomial nomenclature). Canis is the Latin word meaning "dog",
-            and under this genus, he listed the domestic dog, the wolf, and the golden jackal."
-        </paragraph>
+                <paragraph>
+                    "In 1758, the Swedish botanist and zoologist Carl Linnaeus published in his Systema Naturae,
+                    the two-word naming of species (binomial nomenclature). Canis is the Latin word meaning "dog",
+                    and under this genus, he listed the domestic dog, the wolf, and the golden jackal."
+                </paragraph>
 
-        Please rewrite the above paragraph to make it understandable to a 5th grader.
-        Please output your rewrite in <rewrite></rewrite> tags.
-    """;
+                Please rewrite the above paragraph to make it understandable to a 5th grader.
+                Please output your rewrite in <rewrite></rewrite> tags.
+            """;
 
     public static void main(String... args) throws Exception {
 
@@ -55,17 +58,24 @@ public class ClaudeChatWithStreaming {
                             .body(SdkBytes.fromString(bedrockBody, Charset.defaultCharset()))
                             .build();
 
-                    InvokeModelWithResponseStreamResponseHandler responseHandler = InvokeModelWithResponseStreamResponseHandler
-                            .builder()
-                            .onEventStream(
-                                    eventStream -> eventStream.subscribe(System.out::println)
-                            )
-                            .onComplete(() -> {
-                                countDownLatch.countDown();
-                            })
-                            .build();
-
-                    bedrockClient.invokeModelWithResponseStream(invokeModelRequest, responseHandler);
+                    bedrockClient.invokeModelWithResponseStream(invokeModelRequest,
+                            InvokeModelWithResponseStreamResponseHandler.builder()
+                                    .onResponse(response -> {
+                                        System.out.println("🤖 Response: ");
+                                    })
+                                    .subscriber(eventConsumer -> {
+                                        eventConsumer.accept(new InvokeModelWithResponseStreamResponseHandler.Visitor() {
+                                            public void visitChunk(PayloadPart payloadPart) {
+                                                String payloadAsString = payloadPart.bytes().asUtf8String();
+                                                JSONObject payloadAsJson = new JSONObject(payloadAsString);
+                                                System.out.println(payloadAsJson.getString("completion"));
+                                            }
+                                        });
+                                    })
+                                    .onComplete(() -> {
+                                        countDownLatch.countDown();
+                                    })
+                                    .build());
 
                 });
 
