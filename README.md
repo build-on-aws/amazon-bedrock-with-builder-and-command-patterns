@@ -29,6 +29,10 @@ Asking the exact same question to Amazon Bedrock using the `Anthropic Claude V2`
 
 To reduce the cacophony, this project introduces a simple yet powerful implementation to abstract away each the schemas from each FM. This is possible thanks to the usage of the [Builder design pattern](https://en.wikipedia.org/wiki/Builder_pattern) that separates the construction of a complex object from its representation. In this case, the complex object is the request body that must be sent to Amazon Bedrock. To allow the usage of different FMs, the [Command design pattern](https://en.wikipedia.org/wiki/Command_pattern) was also used. Each FM has their implementation of the command. This way, each FM can handle their unique parameters their own way.
 
+💡 If you want to learn how to play with this code with a hands-on tutorial, you can watch the YouTube video below.
+
+[![Amazon Bedrock with Java](images/youtube.png)](https://www.youtube.com/watch?v=Vv2J8N0-eHc)
+
 ## 🧑🏻‍💻 Using the BedrockRequetBody implementation
 
 To use the BedrockRequestBody implementation, just invoke the `builder()` static method from the class and start providing the required parameters, which are the `modeId` and the `prompt` respectively. Considering the prompt `When Christmas is celebrated?` this is how you would work with `AI21Labs Jurassic-2 Mid`:
