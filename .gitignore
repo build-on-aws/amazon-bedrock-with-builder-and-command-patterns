@@ -26,3 +26,6 @@ replay_pid*
 # others
 target
 .vscode
+.idea
+
+/.java-version
